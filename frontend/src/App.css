@@ -338,19 +338,33 @@
 .connect-form-container {
   flex: 1;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   padding: 20px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   background:
     radial-gradient(ellipse at top, rgba(34, 197, 94, 0.05) 0%, transparent 50%),
     var(--bg-primary);
 }
 
+.connect-form-container::before {
+  content: '';
+  flex: 1;
+}
+
+.connect-form-container::after {
+  content: '';
+  flex: 1;
+}
+
 .connect-form {
   width: 100%;
   max-width: 420px;
+  margin: auto 0;
   padding: 28px;
   box-sizing: border-box;
+  flex-shrink: 0;
   background: var(--glass-bg);
   backdrop-filter: blur(var(--glass-blur));
   -webkit-backdrop-filter: blur(var(--glass-blur));
