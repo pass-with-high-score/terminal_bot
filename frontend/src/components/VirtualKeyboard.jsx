@@ -148,6 +148,7 @@ function VirtualKeyboard({ onKeyPress, isVisible, onToggle }) {
                 key={key}
                 className={`tk-key ${isActive ? 'active' : ''} ${isModifier ? 'modifier' : ''} ${isArrow ? 'arrow' : ''}`}
                 onClick={() => handleKeyPress(key)}
+                onMouseDown={(e) => e.preventDefault()}
                 onTouchStart={(e) => e.preventDefault()}
                 onTouchEnd={() => handleKeyPress(key)}
             >
@@ -176,18 +177,21 @@ function VirtualKeyboard({ onKeyPress, isVisible, onToggle }) {
                         <button
                             className={`tk-extra-tab ${currentExtraRow === 'extra' ? 'active' : ''}`}
                             onClick={() => setCurrentExtraRow('extra')}
+                            onMouseDown={(e) => e.preventDefault()}
                         >
                             Symbols
                         </button>
                         <button
                             className={`tk-extra-tab ${currentExtraRow === 'fn' ? 'active' : ''}`}
                             onClick={() => setCurrentExtraRow('fn')}
+                            onMouseDown={(e) => e.preventDefault()}
                         >
                             F1-F12
                         </button>
                         <button
                             className={`tk-extra-tab ${currentExtraRow === 'nav' ? 'active' : ''}`}
                             onClick={() => setCurrentExtraRow('nav')}
+                            onMouseDown={(e) => e.preventDefault()}
                         >
                             Nav
                         </button>
@@ -203,6 +207,7 @@ function VirtualKeyboard({ onKeyPress, isVisible, onToggle }) {
                 <button
                     className={`tk-expand-btn ${showExtraRows ? 'expanded' : ''}`}
                     onClick={() => setShowExtraRows(!showExtraRows)}
+                    onMouseDown={(e) => e.preventDefault()}
                     title={showExtraRows ? 'Collapse' : 'More keys'}
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -218,7 +223,7 @@ function VirtualKeyboard({ onKeyPress, isVisible, onToggle }) {
                     {KEY_ROWS.main.map(renderKey)}
                 </div>
 
-                <button className="tk-close-btn" onClick={onToggle} title="Hide">
+                <button className="tk-close-btn" onClick={onToggle} onMouseDown={(e) => e.preventDefault()} title="Hide">
                     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                         <line x1="18" y1="6" x2="6" y2="18" />
                         <line x1="6" y1="6" x2="18" y2="18" />
