@@ -1,6 +1,62 @@
 import { useState } from 'react'
 import PropTypes from 'prop-types'
 
+// SVG Icons
+const LockIcon = ({ width = 24, height = 24 }) => (
+    <svg width={width} height={height} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+        <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+    </svg>
+)
+
+const KeyIcon = () => (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="m21 2-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0 3 3L22 7l-3-3m-3.5 3.5L19 4" />
+    </svg>
+)
+
+const FileKeyIcon = () => (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
+        <polyline points="14,2 14,8 20,8" />
+        <circle cx="10" cy="16" r="2" />
+        <path d="m16 20-4-4" />
+    </svg>
+)
+
+const FolderIcon = () => (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z" />
+    </svg>
+)
+
+const ArrowRightIcon = () => (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M5 12h14" />
+        <path d="m12 5 7 7-7 7" />
+    </svg>
+)
+
+const LoaderIcon = () => (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M21 12a9 9 0 1 1-6.219-8.56" />
+    </svg>
+)
+
+const AlertCircleIcon = () => (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="12" cy="12" r="10" />
+        <line x1="12" y1="8" x2="12" y2="12" />
+        <line x1="12" y1="16" x2="12.01" y2="16" />
+    </svg>
+)
+
+const CheckIcon = () => (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <polyline points="20,6 9,17 4,12" />
+    </svg>
+)
+
 function ConnectForm({ onConnect, error }) {
     const [host, setHost] = useState('')
     const [port, setPort] = useState('22')
@@ -49,7 +105,10 @@ function ConnectForm({ onConnect, error }) {
     return (
         <div className="connect-form-container">
             <form className="connect-form" onSubmit={handleSubmit}>
-                <h2 className="form-title">🔐 Connect to SSH Server</h2>
+                <div className="form-header">
+                    <LockIcon className="form-header-icon" width="28" height="28" />
+                    <h2 className="form-title">SSH Connect</h2>
+                </div>
 
                 <div className="form-row">
                     <div className="form-group">
@@ -94,14 +153,16 @@ function ConnectForm({ onConnect, error }) {
                         className={`auth-tab ${authType === 'password' ? 'active' : ''}`}
                         onClick={() => setAuthType('password')}
                     >
-                        🔑 Password
+                        <KeyIcon />
+                        Password
                     </button>
                     <button
                         type="button"
                         className={`auth-tab ${authType === 'key' ? 'active' : ''}`}
                         onClick={() => setAuthType('key')}
                     >
-                        📄 Private Key
+                        <FileKeyIcon />
+                        Private Key
                     </button>
                 </div>
 
@@ -132,7 +193,17 @@ function ConnectForm({ onConnect, error }) {
                                     htmlFor="keyFile"
                                     className={`file-input-label ${keyFileName ? 'has-file' : ''}`}
                                 >
-                                    {keyFileName || '📁 Choose private key file...'}
+                                    {keyFileName ? (
+                                        <>
+                                            <CheckIcon />
+                                            {keyFileName}
+                                        </>
+                                    ) : (
+                                        <>
+                                            <FolderIcon />
+                                            Choose private key file...
+                                        </>
+                                    )}
                                 </label>
                             </div>
                         </div>
@@ -151,15 +222,26 @@ function ConnectForm({ onConnect, error }) {
 
                 <button
                     type="submit"
-                    className="submit-btn"
+                    className={`submit-btn ${isLoading ? 'loading' : ''}`}
                     disabled={!isFormValid || isLoading}
                 >
-                    {isLoading ? '⏳ Connecting...' : '🚀 Connect'}
+                    {isLoading ? (
+                        <>
+                            <LoaderIcon />
+                            Connecting...
+                        </>
+                    ) : (
+                        <>
+                            Connect
+                            <ArrowRightIcon />
+                        </>
+                    )}
                 </button>
 
                 {error && (
                     <div className="error-message">
-                        ❌ {error}
+                        <AlertCircleIcon />
+                        <span>{error}</span>
                     </div>
                 )}
             </form>

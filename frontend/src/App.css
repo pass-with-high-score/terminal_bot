@@ -1,36 +1,39 @@
 :root {
-  --bg-primary: #0d1117;
-  --bg-secondary: #161b22;
-  --bg-tertiary: #21262d;
-  --border-color: #30363d;
-  --text-primary: #e6edf3;
-  --text-secondary: #8b949e;
-  --accent-color: #58a6ff;
-  --accent-hover: #79b8ff;
-  --success-color: #3fb950;
-  --error-color: #f85149;
-  --warning-color: #d29922;
-}
+  /* Color Palette - Developer Dark Theme */
+  --bg-primary: #0F172A;
+  --bg-secondary: #1E293B;
+  --bg-tertiary: #334155;
+  --border-color: #475569;
+  --border-glow: rgba(34, 197, 94, 0.3);
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+  --text-primary: #F8FAFC;
+  --text-secondary: #94A3B8;
+  --text-muted: #64748B;
 
-body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif;
-  background-color: var(--bg-primary);
-  color: var(--text-primary);
-  min-height: 100vh;
-  min-height: 100dvh;
-}
+  --accent-color: #22C55E;
+  --accent-hover: #16A34A;
+  --accent-glow: rgba(34, 197, 94, 0.4);
 
-#root {
-  min-height: 100vh;
-  min-height: 100dvh;
-  display: flex;
-  flex-direction: column;
+  --error-color: #EF4444;
+  --error-glow: rgba(239, 68, 68, 0.3);
+  --warning-color: #F59E0B;
+  --info-color: #3B82F6;
+
+  /* Glassmorphism */
+  --glass-bg: rgba(30, 41, 59, 0.8);
+  --glass-border: rgba(71, 85, 105, 0.5);
+  --glass-blur: 12px;
+
+  /* Transitions */
+  --transition-fast: 150ms ease;
+  --transition-normal: 200ms ease;
+  --transition-slow: 300ms ease;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.5);
+  --shadow-glow: 0 0 20px var(--accent-glow);
 }
 
 .app {
@@ -38,29 +41,37 @@ body {
   flex-direction: column;
   min-height: 100vh;
   min-height: 100dvh;
+  background: var(--bg-primary);
 }
 
-/* Header */
+/* ============================================
+   HEADER
+   ============================================ */
 .header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 12px 16px;
-  background-color: var(--bg-secondary);
-  border-bottom: 1px solid var(--border-color);
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border-bottom: 1px solid var(--glass-border);
 }
 
 .header-title {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   font-size: 16px;
   font-weight: 600;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--text-primary);
 }
 
 .header-title svg {
-  width: 20px;
-  height: 20px;
+  width: 22px;
+  height: 22px;
+  color: var(--accent-color);
 }
 
 .header-status {
@@ -72,8 +83,9 @@ body {
 .status-indicator {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   font-size: 13px;
+  font-family: 'JetBrains Mono', monospace;
   color: var(--text-secondary);
 }
 
@@ -81,32 +93,58 @@ body {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background-color: var(--text-secondary);
+  background-color: var(--text-muted);
+  transition: all var(--transition-normal);
 }
 
 .status-dot.connected {
-  background-color: var(--success-color);
-  box-shadow: 0 0 8px var(--success-color);
+  background-color: var(--accent-color);
+  box-shadow: 0 0 8px var(--accent-color), 0 0 16px var(--accent-glow);
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+
+  0%,
+  100% {
+    box-shadow: 0 0 8px var(--accent-color), 0 0 16px var(--accent-glow);
+  }
+
+  50% {
+    box-shadow: 0 0 12px var(--accent-color), 0 0 24px var(--accent-glow);
+  }
 }
 
 .disconnect-btn {
-  padding: 6px 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
   font-size: 13px;
   font-weight: 500;
+  font-family: 'IBM Plex Sans', sans-serif;
   color: var(--text-primary);
-  background-color: var(--bg-tertiary);
+  background: var(--bg-tertiary);
   border: 1px solid var(--border-color);
-  border-radius: 6px;
+  border-radius: 8px;
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: all var(--transition-fast);
 }
 
 .disconnect-btn:hover {
-  background-color: var(--error-color);
+  background: var(--error-color);
   border-color: var(--error-color);
+  box-shadow: 0 0 12px var(--error-glow);
 }
 
-/* Main Content */
+.disconnect-btn:focus-visible {
+  outline: 2px solid var(--accent-color);
+  outline-offset: 2px;
+}
+
+/* ============================================
+   MAIN CONTENT
+   ============================================ */
 .main-content {
   flex: 1;
   display: flex;
@@ -114,41 +152,66 @@ body {
   overflow: hidden;
 }
 
-/* Connect Form */
+/* ============================================
+   CONNECT FORM
+   ============================================ */
 .connect-form-container {
   flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 20px;
+  background:
+    radial-gradient(ellipse at top, rgba(34, 197, 94, 0.05) 0%, transparent 50%),
+    var(--bg-primary);
 }
 
 .connect-form {
   width: 100%;
-  max-width: 400px;
-  padding: 24px;
-  background-color: var(--bg-secondary);
-  border: 1px solid var(--border-color);
-  border-radius: 12px;
+  max-width: 420px;
+  padding: 28px;
+  box-sizing: border-box;
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  box-shadow: var(--shadow-lg);
+}
+
+.form-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.form-header-icon {
+  width: 22px;
+  height: 22px;
+  color: var(--accent-color);
 }
 
 .form-title {
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 600;
-  margin-bottom: 20px;
-  text-align: center;
+  font-family: 'IBM Plex Sans', sans-serif;
+  color: var(--text-primary);
+  margin: 0;
 }
 
 .form-group {
-  margin-bottom: 16px;
+  margin-bottom: 18px;
 }
 
 .form-label {
   display: block;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 500;
   color: var(--text-secondary);
-  margin-bottom: 6px;
+  margin-bottom: 8px;
+  font-family: 'IBM Plex Sans', sans-serif;
 }
 
 .form-row {
@@ -161,54 +224,84 @@ body {
 }
 
 .form-row .form-group.port {
-  flex: 0 0 80px;
+  flex: 0 0 90px;
 }
 
 .form-input {
   width: 100%;
-  padding: 10px 12px;
+  padding: 12px 14px;
+  box-sizing: border-box;
   font-size: 14px;
+  font-family: 'JetBrains Mono', monospace;
   color: var(--text-primary);
-  background-color: var(--bg-primary);
+  background: var(--bg-primary);
   border: 1px solid var(--border-color);
-  border-radius: 6px;
+  border-radius: 8px;
   outline: none;
-  transition: border-color 0.15s ease;
+  transition: all var(--transition-fast);
+}
+
+.form-input:hover {
+  border-color: var(--text-muted);
 }
 
 .form-input:focus {
   border-color: var(--accent-color);
+  box-shadow: 0 0 0 3px var(--accent-glow);
 }
 
 .form-input::placeholder {
-  color: var(--text-secondary);
+  color: var(--text-muted);
+  font-family: 'JetBrains Mono', monospace;
 }
 
+/* Auth Tabs */
 .auth-tabs {
   display: flex;
   gap: 8px;
-  margin-bottom: 16px;
+  margin-bottom: 18px;
 }
 
 .auth-tab {
   flex: 1;
-  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 14px;
   font-size: 13px;
   font-weight: 500;
+  font-family: 'IBM Plex Sans', sans-serif;
   color: var(--text-secondary);
-  background-color: var(--bg-tertiary);
+  background: var(--bg-tertiary);
   border: 1px solid var(--border-color);
-  border-radius: 6px;
+  border-radius: 8px;
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: all var(--transition-fast);
+}
+
+.auth-tab:hover {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
 }
 
 .auth-tab.active {
-  color: var(--text-primary);
-  background-color: var(--accent-color);
+  color: var(--bg-primary);
+  background: var(--accent-color);
   border-color: var(--accent-color);
 }
 
+.auth-tab:focus-visible {
+  outline: 2px solid var(--accent-color);
+  outline-offset: 2px;
+}
+
+.auth-tab svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* File Input */
 .file-input-wrapper {
   position: relative;
 }
@@ -221,15 +314,16 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  padding: 10px 12px;
+  gap: 10px;
+  padding: 14px;
   font-size: 14px;
-  color: var(--text-secondary);
-  background-color: var(--bg-primary);
-  border: 1px dashed var(--border-color);
-  border-radius: 6px;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--text-muted);
+  background: var(--bg-primary);
+  border: 2px dashed var(--border-color);
+  border-radius: 8px;
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: all var(--transition-fast);
 }
 
 .file-input-label:hover {
@@ -239,55 +333,110 @@ body {
 
 .file-input-label.has-file {
   border-style: solid;
-  border-color: var(--success-color);
-  color: var(--success-color);
+  border-color: var(--accent-color);
+  color: var(--accent-color);
+  background: rgba(34, 197, 94, 0.1);
 }
 
+.file-input-label svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* Submit Button */
 .submit-btn {
   width: 100%;
-  padding: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 14px;
   font-size: 15px;
   font-weight: 600;
-  color: white;
-  background-color: var(--accent-color);
+  font-family: 'IBM Plex Sans', sans-serif;
+  color: var(--bg-primary);
+  background: var(--accent-color);
   border: none;
-  border-radius: 6px;
+  border-radius: 10px;
   cursor: pointer;
-  transition: background-color 0.15s ease;
+  transition: all var(--transition-fast);
 }
 
-.submit-btn:hover {
-  background-color: var(--accent-hover);
+.submit-btn:hover:not(:disabled) {
+  background: var(--accent-hover);
+  box-shadow: var(--shadow-glow);
+  transform: translateY(-1px);
+}
+
+.submit-btn:active:not(:disabled) {
+  transform: translateY(0);
 }
 
 .submit-btn:disabled {
-  opacity: 0.6;
+  opacity: 0.5;
   cursor: not-allowed;
 }
 
-.error-message {
-  margin-top: 16px;
-  padding: 12px;
-  font-size: 13px;
-  color: var(--error-color);
-  background-color: rgba(248, 81, 73, 0.1);
-  border: 1px solid var(--error-color);
-  border-radius: 6px;
-  text-align: center;
+.submit-btn:focus-visible {
+  outline: 2px solid var(--text-primary);
+  outline-offset: 2px;
 }
 
-/* Terminal */
+.submit-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+.submit-btn.loading svg {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Error Message */
+.error-message {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-top: 18px;
+  padding: 14px;
+  font-size: 13px;
+  font-family: 'IBM Plex Sans', sans-serif;
+  color: var(--error-color);
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: 8px;
+}
+
+.error-message svg {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+/* ============================================
+   TERMINAL
+   ============================================ */
 .terminal-container {
   flex: 1;
   display: flex;
   flex-direction: column;
-  background-color: #000;
+  background: #0d1117;
   overflow: hidden;
 }
 
 .terminal-wrapper {
   flex: 1;
-  padding: 4px;
+  padding: 8px;
 }
 
 /* xterm.js overrides */
@@ -299,24 +448,64 @@ body {
   overflow-y: auto !important;
 }
 
-/* Telegram WebApp adjustments */
+/* ============================================
+   ACCESSIBILITY
+   ============================================ */
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Focus visible for all interactive elements */
+button:focus-visible,
+input:focus-visible,
+a:focus-visible {
+  outline: 2px solid var(--accent-color);
+  outline-offset: 2px;
+}
+
+/* ============================================
+   TELEGRAM WEBAPP ADJUSTMENTS
+   ============================================ */
 @supports (padding: env(safe-area-inset-bottom)) {
   .app {
     padding-bottom: env(safe-area-inset-bottom);
   }
 }
 
-/* Responsive */
+/* ============================================
+   RESPONSIVE
+   ============================================ */
 @media (max-width: 480px) {
   .connect-form {
-    padding: 16px;
+    padding: 20px;
+    border-radius: 12px;
   }
 
   .form-row {
     flex-direction: column;
+    gap: 0;
   }
 
   .form-row .form-group.port {
     flex: 1;
+  }
+
+  .header {
+    padding: 10px 12px;
+  }
+
+  .header-title {
+    font-size: 14px;
+  }
+
+  .status-indicator span:last-child {
+    display: none;
   }
 }

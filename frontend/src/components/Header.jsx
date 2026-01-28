@@ -1,12 +1,25 @@
 import PropTypes from 'prop-types'
 
+// Terminal Icon - cleaner design
+const TerminalIcon = () => (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <polyline points="4,17 10,11 4,5" />
+        <line x1="12" y1="19" x2="20" y2="19" />
+    </svg>
+)
+
+const PowerIcon = () => (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M18.36 6.64a9 9 0 1 1-12.73 0" />
+        <line x1="12" y1="2" x2="12" y2="12" />
+    </svg>
+)
+
 function Header({ isConnected, connectionInfo, onDisconnect }) {
     return (
         <header className="header">
             <div className="header-title">
-                <svg viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H4V8h16v10zm-2-1h-6v-2h6v2zM7.5 17l-1.41-1.41L8.67 13l-2.59-2.59L7.5 9l4 4-4 4z" />
-                </svg>
+                <TerminalIcon />
                 <span>SSH Terminal</span>
             </div>
 
@@ -23,6 +36,7 @@ function Header({ isConnected, connectionInfo, onDisconnect }) {
 
                 {isConnected && (
                     <button className="disconnect-btn" onClick={onDisconnect}>
+                        <PowerIcon />
                         Disconnect
                     </button>
                 )}
