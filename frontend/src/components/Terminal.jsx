@@ -6,7 +6,7 @@ import { WebLinksAddon } from '@xterm/addon-web-links'
 import VirtualKeyboard from './VirtualKeyboard'
 import '@xterm/xterm/css/xterm.css'
 
-function Terminal({ sessionId, onDisconnect }) {
+function Terminal({ sessionId }) {
     const terminalRef = useRef(null)
     const xtermRef = useRef(null)
     const fitAddonRef = useRef(null)
@@ -183,8 +183,7 @@ function Terminal({ sessionId, onDisconnect }) {
 }
 
 Terminal.propTypes = {
-    sessionId: PropTypes.string.isRequired,
-    onDisconnect: PropTypes.func.isRequired
+    sessionId: PropTypes.string.isRequired
 }
 
 export default Terminal
