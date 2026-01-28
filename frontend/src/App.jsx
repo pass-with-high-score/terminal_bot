@@ -1,4 +1,5 @@
 import { useState, useCallback, useMemo } from 'react'
+import { Analytics } from '@vercel/analytics/react'
 import ConnectForm from './components/ConnectForm'
 import Terminal from './components/Terminal'
 import Header from './components/Header'
@@ -175,6 +176,7 @@ function App() {
           </div>
         ))}
       </main>
+      <Analytics />
     </div>
   )
 }
