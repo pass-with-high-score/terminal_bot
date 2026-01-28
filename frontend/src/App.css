@@ -626,11 +626,15 @@
   flex-direction: column;
   background: #0d1117;
   overflow: hidden;
+  min-height: 0;
 }
 
 .terminal-wrapper {
   flex: 1;
   padding: 8px;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  min-height: 0;
 }
 
 /* xterm.js overrides */
