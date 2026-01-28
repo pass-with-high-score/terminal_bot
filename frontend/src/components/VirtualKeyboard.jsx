@@ -49,6 +49,9 @@ const KEY_ROWS = {
     extra: ['~', '`', '[', ']', '{', '}', '<', '>', '\\', '_', ':'],
     fn: ['F1', 'F2', 'F3', 'F4', 'F5', 'F6', 'F7', 'F8', 'F9', 'F10', 'F11', 'F12'],
     nav: ['Home', 'End', 'PgUp', 'PgDn', 'Del', 'Ins'],
+    // Common Ctrl/Alt combo letters shown when modifier is active
+    ctrlCombo: ['C', 'D', 'Z', 'L', 'A', 'E', 'U', 'K', 'W', 'R', 'X', 'V'],
+    altCombo: ['B', 'F', 'D'],
 }
 
 function VirtualKeyboard({ onKeyPress, isVisible, onToggle }) {
@@ -231,11 +234,34 @@ function VirtualKeyboard({ onKeyPress, isVisible, onToggle }) {
                 </button>
             </div>
 
-            {/* Modifier hint */}
+            {/* Modifier combo row - shows common letters when Ctrl/Alt is active */}
             {activeModifier && (
-                <div className="tk-hint">
-                    <span className="tk-hint-badge">{activeModifier}</span>
-                    <span>Press a key (e.g., C for Ctrl+C)</span>
+                <div className="tk-combo-section">
+                    <div className="tk-combo-header">
+                        <span className="tk-hint-badge">{activeModifier}</span>
+                        <span>Tap a key to send {activeModifier}+key</span>
+                        <button
+                            className="tk-cancel-btn"
+                            onClick={() => setActiveModifier(null)}
+                            onMouseDown={(e) => e.preventDefault()}
+                        >
+                            ✕
+                        </button>
+                    </div>
+                    <div className="tk-row tk-combo-row">
+                        {(activeModifier === 'Ctrl' ? KEY_ROWS.ctrlCombo : KEY_ROWS.altCombo).map((key) => (
+                            <button
+                                key={key}
+                                className="tk-key combo-key"
+                                onClick={() => handleKeyPress(key)}
+                                onMouseDown={(e) => e.preventDefault()}
+                                onTouchStart={(e) => e.preventDefault()}
+                                onTouchEnd={() => handleKeyPress(key)}
+                            >
+                                {key}
+                            </button>
+                        ))}
+                    </div>
                 </div>
             )}
         </div>

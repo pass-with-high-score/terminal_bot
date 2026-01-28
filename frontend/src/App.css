@@ -870,18 +870,85 @@ a:focus-visible {
   font-size: 11px;
 }
 
-/* Modifier hint */
-.tk-hint {
+/* Modifier combo section */
+.tk-combo-section {
+  background: rgba(34, 197, 94, 0.08);
+  border-top: 1px solid rgba(34, 197, 94, 0.3);
+  padding: 8px;
+  animation: slideUp 150ms ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.tk-combo-header {
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 6px;
-  padding: 6px;
+  gap: 8px;
+  margin-bottom: 8px;
   font-size: 11px;
   font-family: 'JetBrains Mono', monospace;
   color: var(--text-secondary);
-  background: rgba(34, 197, 94, 0.1);
-  border-top: 1px solid rgba(34, 197, 94, 0.2);
+}
+
+.tk-combo-header span:last-of-type {
+  flex: 1;
+}
+
+.tk-cancel-btn {
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  background: transparent;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.tk-cancel-btn:hover {
+  background: var(--error-color);
+  border-color: var(--error-color);
+  color: var(--text-primary);
+}
+
+.tk-combo-row {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.tk-key.combo-key {
+  min-width: 36px;
+  height: 32px;
+  font-size: 13px;
+  font-weight: 600;
+  background: var(--accent-color);
+  border-color: var(--accent-color);
+  color: var(--bg-primary);
+}
+
+.tk-key.combo-key:hover {
+  background: var(--accent-hover);
+  border-color: var(--accent-hover);
+}
+
+.tk-key.combo-key:active {
+  transform: scale(0.92);
 }
 
 .tk-hint-badge {
