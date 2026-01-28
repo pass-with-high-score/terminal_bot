@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef, useCallback } from 'react'
 import PropTypes from 'prop-types'
 
 // Icons
@@ -26,6 +26,7 @@ const TerminalIcon = () => (
 function TabBar({ tabs, activeTabId, onSwitchTab, onCloseTab, onAddTab, onRenameTab }) {
     const [editingTabId, setEditingTabId] = useState(null)
     const [editValue, setEditValue] = useState('')
+    const lastTapRef = useRef({ time: 0, tabId: null })
 
     const handleDoubleClick = (tab) => {
         setEditingTabId(tab.id)
@@ -57,6 +58,24 @@ function TabBar({ tabs, activeTabId, onSwitchTab, onCloseTab, onAddTab, onRename
         return 'New Connection'
     }
 
+    // Handle touch with double-tap detection for mobile
+    const handleTouchEnd = useCallback((e, tab) => {
+        e.preventDefault() // Prevent delayed click event
+
+        const now = Date.now()
+        const lastTap = lastTapRef.current
+
+        // Double tap detection (within 300ms on same tab)
+        if (lastTap.tabId === tab.id && now - lastTap.time < 300) {
+            handleDoubleClick(tab)
+            lastTapRef.current = { time: 0, tabId: null }
+        } else {
+            // Single tap - switch tab
+            onSwitchTab(tab.id)
+            lastTapRef.current = { time: now, tabId: tab.id }
+        }
+    }, [onSwitchTab])
+
     return (
         <div className="tab-bar">
             <div className="tab-list">
@@ -66,6 +85,7 @@ function TabBar({ tabs, activeTabId, onSwitchTab, onCloseTab, onAddTab, onRename
                         className={`tab-item ${tab.id === activeTabId ? 'active' : ''} ${tab.sessionId ? 'connected' : ''}`}
                         onClick={() => onSwitchTab(tab.id)}
                         onDoubleClick={() => handleDoubleClick(tab)}
+                        onTouchEnd={(e) => handleTouchEnd(e, tab)}
                     >
                         <TerminalIcon />
                         {editingTabId === tab.id ? (
@@ -77,6 +97,7 @@ function TabBar({ tabs, activeTabId, onSwitchTab, onCloseTab, onAddTab, onRename
                                 onBlur={() => handleFinishEdit(tab.id)}
                                 onKeyDown={(e) => handleKeyDown(e, tab.id)}
                                 onClick={(e) => e.stopPropagation()}
+                                onTouchEnd={(e) => e.stopPropagation()}
                                 autoFocus
                                 placeholder={getTabTitle(tab)}
                             />
@@ -88,6 +109,11 @@ function TabBar({ tabs, activeTabId, onSwitchTab, onCloseTab, onAddTab, onRename
                                 className="tab-close-btn"
                                 onClick={(e) => {
                                     e.stopPropagation()
+                                    onCloseTab(tab.id)
+                                }}
+                                onTouchEnd={(e) => {
+                                    e.stopPropagation()
+                                    e.preventDefault()
                                     onCloseTab(tab.id)
                                 }}
                                 title="Close tab"
