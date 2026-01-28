@@ -58,6 +58,171 @@
   border-bottom: 1px solid var(--glass-border);
 }
 
+/* ============================================
+   TAB BAR
+   ============================================ */
+.tab-bar {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 12px;
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--glass-border);
+  overflow-x: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-color) transparent;
+}
+
+.tab-bar::-webkit-scrollbar {
+  height: 4px;
+}
+
+.tab-bar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.tab-bar::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 2px;
+}
+
+.tab-list {
+  display: flex;
+  gap: 4px;
+  flex: 1;
+  min-width: 0;
+}
+
+.tab-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  min-width: 120px;
+  max-width: 200px;
+  font-size: 12px;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--text-secondary);
+  background: var(--bg-tertiary);
+  border: 1px solid transparent;
+  border-radius: 8px 8px 0 0;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  position: relative;
+}
+
+.tab-item:hover {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+.tab-item.active {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  border-color: var(--glass-border);
+  border-bottom-color: var(--bg-primary);
+}
+
+.tab-item.connected {
+  color: var(--accent-color);
+}
+
+.tab-item.connected.active {
+  color: var(--accent-color);
+}
+
+.tab-item svg {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+.tab-title {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tab-close-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  border-radius: 4px;
+  color: var(--text-muted);
+  cursor: pointer;
+  opacity: 0;
+  transition: all var(--transition-fast);
+}
+
+.tab-item:hover .tab-close-btn {
+  opacity: 1;
+}
+
+.tab-close-btn:hover {
+  background: var(--error-color);
+  color: var(--text-primary);
+}
+
+.tab-close-btn svg {
+  width: 12px;
+  height: 12px;
+}
+
+.tab-add-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  flex-shrink: 0;
+}
+
+.tab-add-btn:hover {
+  background: var(--accent-color);
+  border-color: var(--accent-color);
+  color: var(--bg-primary);
+}
+
+.tab-add-btn:focus-visible {
+  outline: 2px solid var(--accent-color);
+  outline-offset: 2px;
+}
+
+.tab-add-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+.tab-rename-input {
+  flex: 1;
+  min-width: 60px;
+  padding: 2px 6px;
+  font-size: 12px;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--text-primary);
+  background: var(--bg-primary);
+  border: 1px solid var(--accent-color);
+  border-radius: 4px;
+  outline: none;
+}
+
+.tab-rename-input::placeholder {
+  color: var(--text-muted);
+}
+
 .header-title {
   display: flex;
   align-items: center;
@@ -150,6 +315,21 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  position: relative;
+}
+
+.tab-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: none;
+  flex-direction: column;
+}
+
+.tab-content.active {
+  display: flex;
 }
 
 /* ============================================
@@ -477,6 +657,263 @@ a:focus-visible {
   .app {
     padding-bottom: env(safe-area-inset-bottom);
   }
+}
+
+/* ============================================
+   TERMIUS/TERMUX STYLE KEYBOARD
+   ============================================ */
+.termux-keyboard {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(to top, rgba(15, 23, 42, 0.98), rgba(15, 23, 42, 0.95));
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-top: 1px solid var(--glass-border);
+  z-index: 1000;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* Main toolbar bar */
+.tk-main-bar {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 8px;
+  background: var(--bg-secondary);
+  border-top: 1px solid rgba(71, 85, 105, 0.3);
+}
+
+.tk-row {
+  display: flex;
+  gap: 3px;
+  flex: 1;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.tk-row::-webkit-scrollbar {
+  display: none;
+}
+
+/* Individual key button */
+.tk-key {
+  min-width: 36px;
+  height: 34px;
+  padding: 0 10px;
+  font-size: 12px;
+  font-weight: 500;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--text-primary);
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 100ms ease;
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  flex-shrink: 0;
+}
+
+.tk-key:hover {
+  background: var(--text-muted);
+  color: var(--bg-primary);
+}
+
+.tk-key:active {
+  background: var(--accent-color);
+  border-color: var(--accent-color);
+  color: var(--bg-primary);
+  transform: scale(0.92);
+}
+
+/* Modifier keys (Ctrl, Alt) */
+.tk-key.modifier {
+  background: var(--bg-primary);
+  border-color: var(--text-muted);
+  color: var(--accent-color);
+  font-weight: 600;
+}
+
+.tk-key.modifier:hover {
+  background: var(--accent-color);
+  color: var(--bg-primary);
+}
+
+.tk-key.modifier.active {
+  background: var(--accent-color);
+  border-color: var(--accent-color);
+  color: var(--bg-primary);
+  box-shadow: 0 0 8px var(--accent-glow);
+}
+
+/* Arrow keys */
+.tk-key.arrow {
+  min-width: 32px;
+  font-size: 14px;
+}
+
+/* Expand/Collapse button */
+.tk-expand-btn,
+.tk-close-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  background: transparent;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all var(--transition-fast);
+}
+
+.tk-expand-btn:hover,
+.tk-close-btn:hover {
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+}
+
+.tk-expand-btn.expanded {
+  background: var(--accent-color);
+  border-color: var(--accent-color);
+  color: var(--bg-primary);
+}
+
+.tk-close-btn:hover {
+  background: var(--error-color);
+  border-color: var(--error-color);
+  color: var(--text-primary);
+}
+
+/* Extra section (expandable) */
+.tk-extra-section {
+  padding: 8px;
+  border-bottom: 1px solid rgba(71, 85, 105, 0.3);
+  animation: slideDown 150ms ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    max-height: 0;
+  }
+
+  to {
+    opacity: 1;
+    max-height: 100px;
+  }
+}
+
+.tk-extra-tabs {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.tk-extra-tab {
+  padding: 4px 12px;
+  font-size: 11px;
+  font-weight: 500;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--text-muted);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.tk-extra-tab:hover {
+  color: var(--text-primary);
+}
+
+.tk-extra-tab.active {
+  color: var(--accent-color);
+  background: rgba(34, 197, 94, 0.1);
+  border-color: rgba(34, 197, 94, 0.3);
+}
+
+.tk-extra-row {
+  gap: 4px;
+  justify-content: flex-start;
+}
+
+.tk-extra-row .tk-key {
+  min-width: 32px;
+  height: 30px;
+  font-size: 11px;
+}
+
+/* Modifier hint */
+.tk-hint {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 6px;
+  font-size: 11px;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--text-secondary);
+  background: rgba(34, 197, 94, 0.1);
+  border-top: 1px solid rgba(34, 197, 94, 0.2);
+}
+
+.tk-hint-badge {
+  padding: 2px 6px;
+  font-weight: 600;
+  font-size: 10px;
+  color: var(--bg-primary);
+  background: var(--accent-color);
+  border-radius: 3px;
+}
+
+/* Toggle button - compact pill style like Termius */
+.tk-toggle-btn {
+  position: fixed;
+  bottom: 12px;
+  right: 12px;
+  bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  color: var(--accent-color);
+  cursor: pointer;
+  box-shadow: var(--shadow-md);
+  z-index: 999;
+  transition: all var(--transition-fast);
+}
+
+.tk-toggle-btn:hover {
+  background: var(--accent-color);
+  border-color: var(--accent-color);
+  color: var(--bg-primary);
+  box-shadow: var(--shadow-lg), 0 0 12px var(--accent-glow);
+}
+
+.tk-toggle-btn:active {
+  transform: scale(0.92);
+}
+
+/* Terminal adjustment when keyboard is visible */
+.terminal-container.keyboard-visible {
+  padding-bottom: 52px;
+}
+
+.terminal-container.keyboard-visible.extra-visible {
+  padding-bottom: 120px;
 }
 
 /* ============================================

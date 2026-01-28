@@ -1,8 +1,9 @@
-import { useEffect, useRef, useCallback } from 'react'
+import { useEffect, useRef, useCallback, useState } from 'react'
 import PropTypes from 'prop-types'
 import { Terminal as XTerm } from '@xterm/xterm'
 import { FitAddon } from '@xterm/addon-fit'
 import { WebLinksAddon } from '@xterm/addon-web-links'
+import VirtualKeyboard from './VirtualKeyboard'
 import '@xterm/xterm/css/xterm.css'
 
 function Terminal({ sessionId, onDisconnect }) {
@@ -10,6 +11,11 @@ function Terminal({ sessionId, onDisconnect }) {
     const xtermRef = useRef(null)
     const fitAddonRef = useRef(null)
     const wsRef = useRef(null)
+
+    // Virtual keyboard state - show by default on touch devices
+    const [isKeyboardVisible, setIsKeyboardVisible] = useState(() => {
+        return 'ontouchstart' in window || navigator.maxTouchPoints > 0
+    })
 
     const connect = useCallback(() => {
         const wsUrl = `${import.meta.env.VITE_WS_URL || 'ws://localhost:8000'}/ws/terminal/${sessionId}`
@@ -54,9 +60,6 @@ function Terminal({ sessionId, onDisconnect }) {
 
         ws.onclose = () => {
             console.log('WebSocket disconnected')
-            if (xtermRef.current) {
-                xtermRef.current.write('\r\n\x1b[33mConnection closed.\x1b[0m\r\n')
-            }
         }
 
         return ws
@@ -152,9 +155,29 @@ function Terminal({ sessionId, onDisconnect }) {
         }
     }, [connect])
 
+    // Handle virtual keyboard key press
+    const handleVirtualKeyPress = useCallback((sequence) => {
+        if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
+            wsRef.current.send(JSON.stringify({ type: 'input', data: sequence }))
+        }
+        // Refocus terminal after key press
+        if (xtermRef.current) {
+            xtermRef.current.focus()
+        }
+    }, [])
+
+    const toggleKeyboard = useCallback(() => {
+        setIsKeyboardVisible(prev => !prev)
+    }, [])
+
     return (
-        <div className="terminal-container">
+        <div className={`terminal-container ${isKeyboardVisible ? 'keyboard-visible' : ''}`}>
             <div className="terminal-wrapper" ref={terminalRef}></div>
+            <VirtualKeyboard
+                onKeyPress={handleVirtualKeyPress}
+                isVisible={isKeyboardVisible}
+                onToggle={toggleKeyboard}
+            />
         </div>
     )
 }
@@ -165,3 +188,4 @@ Terminal.propTypes = {
 }
 
 export default Terminal
+
